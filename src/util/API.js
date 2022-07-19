@@ -1,0 +1,29 @@
+// export const BASE_URL = "http://192.168.1.132/iit_webadmin/api";
+// export const BASE_URL = "http://goappadmin.motdemo.co.uk/api";
+export const BASE_URL = "http://13.233.33.19/api";
+// export const BASE_URL = "http://b4ed-103-159-32-18.ngrok.io/api";
+
+export const SIGNUP = 'signup';
+export const LOGIN = 'login';
+export const VERIFTYOTP = 'VerifyOTP';
+export const FORGETPASSWORD = 'forget_password';
+export const SETPASSWORD = 'change_password';
+export const CATEGORY = 'category';
+export const BOOKVEHICLE = 'add_booking';
+export const ADDADDRESS = 'add_address';
+export const EDITADDRESS = 'edit_address';
+export const ADDRESSLIST = 'address_list';
+export const GETUSERDETAIL = 'user_details';
+export const EDITPROFILEDATA = 'edit_profile';
+//export const EDITPAYMENTDATA = 'payment_option';
+export const PAYMENTOPTIONDATA = 'GeneralSettingAccountDetails';
+export const GETBOOKINGLIST = 'bookingList';
+export const PAYMENTUPLOAD = 'addQuotationPayment';
+export const BOOKDETAIL = 'booking_details';
+export const GETCUSTOMERADDRESSFROMID = 'address_details';
+export const DELETECUSTOMERADDRESSFROMID = 'delete_address';
+export const CUSTOMERBOOKINGDETAILS = 'customer_booking_details';
+export const CANCELBOOKING = 'CancelBooking';
+export const GETMANAGERDEVICETOKEN = 'getallmanagerdevicetoken';
+export const ACCEPTBOOKING = 'customer_accept_booking';
+

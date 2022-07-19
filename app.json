@@ -21,10 +21,12 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#30A46C"
+      },
+      "package": "com.ngrao.GoodMove"
     },
     "web": {
       "favicon": "./assets/favicon.png"
