@@ -1,685 +1,819 @@
-import React, { Component } from 'react';
-import NavigationDrawerStructure from './navigationdrawerstructure';
-import LogoImage from '../../Components/applogo';
-import { RefreshControl, StyleSheet, Dimensions, Image, AsyncStorage, View, TextInput, Text, TouchableOpacity, Keyboard, ScrollView, KeyboardAvoidingView, FlatList, ActivityIndicator, Alert, Modal, TouchableHighlight } from 'react-native';
-import { withNavigation } from 'react-navigation';
-import { colorPrimary } from '../../Components/colors';
-import RadioButton from 'react-native-radio-button';
-import validate from 'validate.js';
-import { addressAction } from '../../util/action';
-import { getAddressAction } from '../../util/action';
-import { getCustomerAddressFromId } from '../../util/action';
-import { deleteCustomerAddressFromId } from '../../util/action';
+import React, { Component } from "react";
+import NavigationDrawerStructure from "./navigationdrawerstructure";
+import LogoImage from "../../Components/applogo";
+import {
+  RefreshControl,
+  StyleSheet,
+  Dimensions,
+  Image,
+  AsyncStorage,
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  Keyboard,
+  ScrollView,
+  KeyboardAvoidingView,
+  FlatList,
+  ActivityIndicator,
+  Alert,
+  Modal,
+  TouchableHighlight,
+} from "react-native";
+import { withNavigation } from "react-navigation";
+import { colorPrimary } from "../../Components/colors";
+import RadioButton from "react-native-radio-button";
+import validate from "validate.js";
+import { addressAction } from "../../util/action";
+import { getAddressAction } from "../../util/action";
+import { getCustomerAddressFromId } from "../../util/action";
+import { deleteCustomerAddressFromId } from "../../util/action";
 // import Map from './map';
 
-import SlidingUpPanel from 'rn-sliding-up-panel';
-import {Row , Col} from 'react-native-easy-grid';
+import SlidingUpPanel from "rn-sliding-up-panel";
+import { Row, Col } from "react-native-easy-grid";
 
 // import SlidingPanel from 'react-native-sliding-up-down-panels';
 
 class Address extends Component {
-	
-	/** navigation header */
-	static navigationOptions = ({ navigation }) => {
-		return {
-			headerTitle: (
-				<View style={{ flex: 1, flexDirection: 'row' }}>
-					<LogoImage />
-					<View style={styles.HeaderTextArea}>
-						<Text style={styles.HeaderText}>Select Address</Text>
-					</View>
-				</View>
-			),
-			headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
-			headerStyle: {
-				backgroundColor: '#FFFFFF',
-				height: 80
-			},
-			headerTintColor: 'red',
-		};
-	};
+  /** navigation header */
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: (
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          <LogoImage />
+          <View style={styles.HeaderTextArea}>
+            <Text style={styles.HeaderText}>Select Address</Text>
+          </View>
+        </View>
+      ),
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: "#FFFFFF",
+        height: 80,
+      },
+      headerTintColor: "red",
+    };
+  };
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			pickLocationList: '',
-			dropLocationList: '',
-			pickLocationListData: '',
-			dropLocationListData: '',
-			street: '', street_Err: '',
-			landmark: '', landmark_Err: '',
-			city: '', city_Err: '',
-			country: '',
-			state: '',
-			pincode: '', pincode_Err: '',
-			address_type: '', mobile: '',
-			loading: false,
-			modalCancle: false,
-			receiver_name: '',
-			receiver_contact: '',
-			sValue: '',
-			sDValue: ''
-		}
+  constructor(props) {
+    super(props);
+    this.state = {
+      pickLocationList: "",
+      dropLocationList: "",
+      pickLocationListData: "",
+      dropLocationListData: "",
+      street: "",
+      street_Err: "",
+      landmark: "",
+      landmark_Err: "",
+      city: "",
+      city_Err: "",
+      country: "",
+      state: "",
+      pincode: "",
+      pincode_Err: "",
+      address_type: "",
+      mobile: "",
+      loading: false,
+      modalCancle: false,
+      receiver_name: "",
+      receiver_contact: "",
+      sValue: "",
+      sDValue: "",
+    };
+  }
 
-	};
+  // upButtonHandler = () => {
+  // 	//OnCLick of Up button we scrolled the list to top
+  // 	if(this.state.paneltoggle){
 
-	// upButtonHandler = () => {
-	// 	//OnCLick of Up button we scrolled the list to top
-	// 	if(this.state.paneltoggle){
-			
-	// 		this._panel.hide();
-	// 		this.setState({
-	// 			paneltoggle: false
-	// 		});
-			
-	// 	}else{
-	// 		this.setState({
-	// 			paneltoggle: true
-	// 		});
-	// 		this._panel.show(50000);
-			
-	// 	}
+  // 		this._panel.hide();
+  // 		this.setState({
+  // 			paneltoggle: false
+  // 		});
 
-		
-	//   };
+  // 	}else{
+  // 		this.setState({
+  // 			paneltoggle: true
+  // 		});
+  // 		this._panel.show(50000);
 
-	/** this is default method when screen load */
-	componentDidMount() {
-		const { navigation } = this.props;
-		this.focusListener = navigation.addListener('didFocus', () => {
+  // 	}
 
-			this.GetAddress();
-		});
+  //   };
 
-	}
+  /** this is default method when screen load */
+  componentDidMount() {
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener("didFocus", () => {
+      this.GetAddress();
+    });
+  }
 
-	/*                                                Map Dependency 	             */
-	
-	/*                                                Map Dependency 	             */
+  /*                                                Map Dependency 	             */
 
-	componentWillUnmount() {
-		// Remove the event listener
-		this.focusListener.remove();
-	}
+  /*                                                Map Dependency 	             */
 
-	/* get address list */
-	async GetAddress() {
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
+  }
 
-		const { navigation } = this.props;
-		const address_type = navigation.getParam('address_type')
+  /* get address list */
+  async GetAddress() {
+    const { navigation } = this.props;
+    const address_type = navigation.getParam("address_type");
 
-		this.setState({
-			address_type: address_type
-		})
-		const customer_id = await AsyncStorage.getItem('userid');
+    this.setState({
+      address_type: address_type,
+    });
+    const customer_id = await AsyncStorage.getItem("userid");
 
-		let Token = await AsyncStorage.getItem('token');
-		Token = 'Bearer ' + Token;
+    let Token = await AsyncStorage.getItem("token");
+    Token = "Bearer " + Token;
 
-		var data = {
-			customer_id: customer_id,
-		}
+    var data = {
+      customer_id: customer_id,
+    };
 
-		this.setState({ loading: true })
-		getAddressAction(data, Token).then(responseJson => {
-			if (responseJson.isError == false) {
-				this.setState({
-					// pickLocationList: responseJson.result.Pickup_address,
-					pickLocationList: [...responseJson.result.Pickup_address, ...responseJson.result.Dropoff_address],
-					dropLocationList: responseJson.result.Dropoff_address,
-					pickLocationListData: [...responseJson.result.Pickup_address, ...responseJson.result.Dropoff_address],
-					dropLocationListData: responseJson.result.Dropoff_address,
-					loading: false,
-					sValue: '',
-					sDValue: ''
-				})
+    this.setState({ loading: true });
+    getAddressAction(data, Token).then((responseJson) => {
+      if (responseJson.isError == false) {
+        this.setState({
+          // pickLocationList: responseJson.result.Pickup_address,
+          pickLocationList: [
+            ...responseJson.result.Pickup_address,
+            ...responseJson.result.Dropoff_address,
+          ],
+          dropLocationList: responseJson.result.Dropoff_address,
+          pickLocationListData: [
+            ...responseJson.result.Pickup_address,
+            ...responseJson.result.Dropoff_address,
+          ],
+          dropLocationListData: responseJson.result.Dropoff_address,
+          loading: false,
+          sValue: "",
+          sDValue: "",
+        });
+      } else {
+        alert(responseJson.message);
+        this.setState({ loading: false });
+      }
+    });
+  }
 
-			} else {
-				alert(responseJson.message);
-				this.setState({ loading: false })
-			}
-		})
-	};
+  /* add address */
+  async submit() {
+    const { street, landmark, city, pincode, state, country, mobile } =
+      this.state;
+    var constraints = {
+      street: {
+        presence: {
+          allowEmpty: false,
+          message: "^requiredstreet",
+        },
+      },
+      landmark: {
+        presence: {
+          allowEmpty: false,
+          message: "^requiredland",
+        },
+      },
+      city: {
+        presence: {
+          allowEmpty: false,
+          message: "^requiredcity",
+        },
+      },
+      pincode: {
+        presence: {
+          allowEmpty: false,
+          message: "^requiredpin",
+        },
+        format: {
+          pattern: "[0-9]{6,10}",
+          flags: "i",
+          message: "^ Please enter the correct pincode.",
+        },
+      },
+    };
+    const result = validate(
+      {
+        street: this.state.street,
+        landmark: this.state.landmark,
+        city: this.state.city,
+        pincode: this.state.pincode,
+      },
+      constraints
+    );
 
-	/* add address */
-	async submit() {
-		const { street, landmark, city, pincode, state, country, mobile } = this.state;
-		var constraints = {
-			street: {
-				presence: {
-					allowEmpty: false,
-					message: "^requiredstreet"
-				},
+    Keyboard.dismiss();
+    if (result) {
+      if (result.street) {
+        this.setState({ street_Err: result.street });
+      } else {
+        this.setState({ street_Err: "" });
+      }
+      if (result.landmark) {
+        this.setState({ landmark_Err: result.landmark });
+      } else {
+        this.setState({ landmark_Err: "" });
+      }
+      if (result.city) {
+        this.setState({ city_Err: result.city });
+      } else {
+        this.setState({ city_Err: "" });
+      }
+      if (result.pincode) {
+        this.setState({ pincode_Err: result.pincode });
+      } else {
+        this.setState({ pincode_Err: "" });
+      }
+    }
 
-			},
-			landmark: {
-				presence: {
-					allowEmpty: false,
-					message: "^requiredland"
-				},
+    if (!result) {
+      var addresslist =
+        this.state.street +
+        "," +
+        this.state.landmark +
+        "," +
+        this.state.city +
+        "," +
+        this.state.state +
+        "," +
+        " " +
+        this.state.pincode +
+        "," +
+        " " +
+        this.state.country;
 
-			},
-			city: {
-				presence: {
-					allowEmpty: false,
-					message: "^requiredcity"
-				},
+      var customer_id = await AsyncStorage.getItem("userid");
 
-			},
-			pincode: {
-				presence: {
-					allowEmpty: false,
-					message: "^requiredpin"
-				},
-				format: {
-					pattern: "[0-9]{6,10}",
-					flags: "i",
-					message: "^ Please enter the correct pincode."
-				},
-			}
-		}
-		const result = validate({
-			street: this.state.street,
-			landmark: this.state.landmark,
-			city: this.state.city,
-			pincode: this.state.pincode,
-		}, constraints);
+      var addressData = {
+        customer_id: customer_id,
+        address: addresslist,
+        city: this.state.city,
+        state: this.state.state,
+        country: this.state.country,
+        pincode: this.state.pincode,
+        latitude: this.state.latitude,
+        longitude: this.state.longitude,
+        mobile: this.state.mobile,
+        address_type: this.state.address_type,
+        receiver_name: this.state.receiver_name,
+        receiver_contact: this.state.receiver_contact,
+      };
+      console.log(addressData);
+      let Token = await AsyncStorage.getItem("token");
+      Token = "Bearer " + Token;
+      this.setState({ loading: true });
+      var response = addressAction(addressData, Token).then((responseJson) => {
+        console.log(responseJson);
+        if (responseJson.isError == false) {
+          this.setState({
+            pickLocationList: "",
+            dropLocationList: "",
+            loading: false,
+          });
+          alert(responseJson.message);
+          this.GetAddress();
+          this.clear();
+        } else {
+          alert(responseJson.message);
+          this.setState({ loading: false });
+        }
+      });
+    }
+  }
+  isJson(str) {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+  setAddressData(street) {
+    if (this.isJson(street)) {
+      let addr = JSON.parse(street);
 
-		Keyboard.dismiss();
-		if (result) {
-			if (result.street) {
-				this.setState({ street_Err: result.street })
-			} else {
-				this.setState({ street_Err: '' })
-			}
-			if (result.landmark) {
-				this.setState({ landmark_Err: result.landmark })
-			} else {
-				this.setState({ landmark_Err: '' })
-			}
-			if (result.city) {
-				this.setState({ city_Err: result.city })
-			} else {
-				this.setState({ city_Err: '' })
-			}
-			if (result.pincode) {
-				this.setState({ pincode_Err: result.pincode })
-			} else {
-				this.setState({ pincode_Err: '' })
-			}
-		}
+      this.setState({
+        street: addr.address,
+        city: addr.city,
+        state: addr.state,
+        country: addr.country,
+        pincode: addr.pincode,
+        latitude: addr.latitude,
+        longitude: addr.longitude,
+        mobile: addr.mobile,
+        receiver_name: addr.receiver_name,
+        receiver_contact: addr.receiver_contact,
+      });
+    } else {
+      this.setState({ street });
+    }
+  }
+  /* clear all textbox */
+  async clear() {
+    this.setState({
+      street: "",
+      landmark: "",
+      city: "",
+      pincode: "",
+      mobile: "",
+      receiver_name: "",
+      receiver_contact: "",
+      street_Err: "",
+      landmark_Err: "",
+      city_Err: "",
+      pincode_Err: "",
+    });
+  }
 
-		if (!result) {
+  /** select address from list and go back to booking page */
+  async addressResponseBack(item) {
+    this.setState({ selectedRadioId: item });
+    let Token = await AsyncStorage.getItem("token");
+    Token = "Bearer " + Token;
 
-			var addresslist = this.state.street + ',' + this.state.landmark + ',' + this.state.city + ',' + this.state.state + ',' + ' ' + this.state.pincode + ',' + ' ' + this.state.country;
+    var getAddressActionData = {
+      address_id: item,
+    };
 
-			var customer_id = await AsyncStorage.getItem('userid');
+    this.setState({ loading: true });
+    getCustomerAddressFromId(getAddressActionData, Token).then(
+      (responseJson) => {
+        if (responseJson.isError == false) {
+          const { navigate } = this.props.navigation;
+          navigate("AddBooking", {
+            itemId: responseJson.result.id,
+            address: responseJson.result.address,
+            addressType: this.state.address_type,
+            pickLat: responseJson.result.latitude,
+            pickLang: responseJson.result.longitude,
+            city: responseJson.result.city,
+            state: responseJson.result.state,
+            pincode: responseJson.result.pincode,
+            country: responseJson.result.country,
+            receiver_contact: responseJson.result.receiver_contact,
+            receiver_name: responseJson.result.receiver_name,
+          });
+          this.setState({ loading: false });
+        } else {
+          alert(responseJson.message);
+          this.setState({ loading: false });
+        }
+      }
+    );
+  }
 
-			var addressData = {
-				customer_id: customer_id,
-				address: addresslist,
-				city: this.state.city,
-				state: this.state.state,
-				country: this.state.country,
-				pincode: this.state.pincode,
-				latitude: this.state.latitude,
-				longitude: this.state.longitude,
-				mobile: this.state.mobile,
-				address_type: this.state.address_type,
-				receiver_name: this.state.receiver_name,
-				receiver_contact: this.state.receiver_contact
-			}
-			console.log(addressData)
-			let Token = await AsyncStorage.getItem('token');
-			Token = 'Bearer ' + Token;
-			this.setState({ loading: true });
-			var response = addressAction(addressData, Token).then(responseJson => {
-				console.log(responseJson)
-				if (responseJson.isError == false) {
-					this.setState({ pickLocationList: '', dropLocationList: '', loading: false })
-					alert(responseJson.message);
-					this.GetAddress();
-					this.clear();
-				} else {
-					alert(responseJson.message);
-					this.setState({ loading: false })
-				}
-			})
-		}
-	}
-	isJson(str) {
-	    try {
-	        JSON.parse(str);
-	    } catch (e) {
-	        return false;
-	    }
-	    return true;
-	}
-	setAddressData (street) {
-		if(this.isJson(street)) {
-			let addr = JSON.parse(street)
+  /** delete address by id */
+  async deleteAddess() {
+    let Token = await AsyncStorage.getItem("token");
+    Token = "Bearer " + Token;
 
-	  		this.setState({
-	  			street: addr.address,
-	  			city: addr.city,
-				state: addr.state,
-				country: addr.country,
-				pincode: addr.pincode,
-				latitude: addr.latitude,
-				longitude: addr.longitude,
-				mobile: addr.mobile,
-				receiver_name: addr.receiver_name,
-				receiver_contact: addr.receiver_contact
-	  		})
-		} else {
-			this.setState({street})
-		}
-	}
-	/* clear all textbox */
-	async clear() {
-		this.setState({
-			street: '', landmark: '', city: '', pincode: '', mobile: '', receiver_name: '', receiver_contact: '',
-			street_Err: '', landmark_Err: '', city_Err: '', pincode_Err: ''
-		})
-	}
+    var getAddressActionData = {
+      address_id: this.state.address_id,
+    };
+    this.setState({ loading: true });
+    deleteCustomerAddressFromId(getAddressActionData, Token).then(
+      (responseJson) => {
+        if (responseJson.isError == false) {
+          this.GetAddress();
+          alert(responseJson.message);
+          this.setState({ loading: false });
+          this.setState({ modalCancle: false });
+        } else {
+          alert(responseJson.message);
+          this.setState({ loading: false });
+        }
+      }
+    );
+  }
 
-	/** select address from list and go back to booking page */
-	async addressResponseBack(item) {
-		this.setState({ selectedRadioId: item });
-		let Token = await AsyncStorage.getItem('token');
-		Token = 'Bearer ' + Token;
+  /** open delete confirm popup modal */
+  opendltModal(ID) {
+    this.setState({ address_id: ID });
+    this.setState({ modalCancle: true });
+  }
 
-		var getAddressActionData = {
-			address_id: item,
-		}
+  /** close delete confirm popup modal */
+  closeModal() {
+    this.setState({ address_id: "" });
+    this.setState({ modalCancle: false });
+  }
 
-		this.setState({ loading: true })
-		getCustomerAddressFromId(getAddressActionData, Token).then(responseJson => {
-			if (responseJson.isError == false) {
-				const { navigate } = this.props.navigation;
-				navigate('AddBooking', { itemId: responseJson.result.id, address: responseJson.result.address, addressType: this.state.address_type, pickLat: responseJson.result.latitude, pickLang: responseJson.result.longitude, city: responseJson.result.city, state: responseJson.result.state, pincode: responseJson.result.pincode, country: responseJson.result.country, receiver_contact: responseJson.result.receiver_contact, receiver_name: responseJson.result.receiver_name });
-				this.setState({ loading: false })
-			} else {
-				alert(responseJson.message);
-				this.setState({ loading: false })
-			}
-		});
-	}
+  /** render item for address list */
+  renderItem = ({ item }) => {
+    var pickaddress = [{ label: "", value: item.id }];
+    return (
+      <View>
+        <View style={styles.card}>
+          <View style={styles.InnerContainer}>
+            <View style={styles.LabelContainer}>
+              <Text style={styles.LabelName}>{item.address}</Text>
+            </View>
 
-	/** delete address by id */
-	async deleteAddess() {
+            <View style={styles.ActionIconContainer}>
+              <View style={styles.radioContiner}>
+                <RadioButton
+                  size={14}
+                  isSelected={this.state.selectedRadioId == item.id}
+                  selectedButtonColor={"green"}
+                  innerColor={"green"}
+                  outerColor={"green"}
+                  onPress={() => {
+                    this.addressResponseBack(item.id);
+                  }}
+                />
+              </View>
+              <TouchableOpacity
+                style={styles.ActionIcon}
+                onPress={() => {
+                  this.opendltModal(item.id);
+                }}
+              >
+                <Image source={require("../../images/Delete.png")} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
 
-		let Token = await AsyncStorage.getItem('token');
-		Token = 'Bearer ' + Token;
+  /** address list refresh */
+  onRefresh() {
+    this.setState({ pickLocationList: [], dropLocationList: [] });
+    this.GetAddress();
+    this.clear();
+  }
 
-		var getAddressActionData = {
-			address_id: this.state.address_id
-		}
-		this.setState({ loading: true })
-		deleteCustomerAddressFromId(getAddressActionData, Token).then(responseJson => {
-			if (responseJson.isError == false) {
-				this.GetAddress();
-				alert(responseJson.message);
-				this.setState({ loading: false })
-				this.setState({ modalCancle: false });
-			} else {
-				alert(responseJson.message);
-				this.setState({ loading: false })
-			}
-		});
-	}
+  searchPickupAddress(sValue) {
+    // console.log("this.state.pickLocationListData")
+    // console.log(this.state.pickLocationListData)
+    let searchResults = [];
+    if (sValue) {
+      searchResults = this.state.pickLocationListData.filter((pData) => {
+        if (pData.address.toLowerCase().includes(sValue.toLowerCase())) {
+          return pData;
+        }
+      });
+    } else {
+      searchResults = this.state.pickLocationListData;
+    }
+    this.setState({
+      pickLocationList: searchResults,
+      sValue: sValue,
+    });
+  }
 
-	/** open delete confirm popup modal */
-	opendltModal(ID) {
-		this.setState({ address_id: ID });
-		this.setState({ modalCancle: true });
-	}
+  searchDropoffAddress(sDValue) {
+    // console.log("this.state.pickLocationListData")
+    // console.log(this.state.pickLocationListData)
+    let searchResults = [];
+    if (sDValue) {
+      searchResults = this.state.dropLocationListData.filter((pData) => {
+        console.log(pData.address.toLowerCase());
+        console.log(
+          pData.address.toLowerCase().includes(sDValue.toLowerCase())
+        );
+        if (pData.address.toLowerCase().includes(sDValue.toLowerCase())) {
+          return pData;
+        }
+      });
+    } else {
+      searchResults = this.state.dropLocationListData;
+    }
+    this.setState({
+      dropLocationList: searchResults,
+      sDValue: sDValue,
+    });
+  }
 
-	/** close delete confirm popup modal */
-	closeModal() {
-		this.setState({ address_id: '' });
-		this.setState({ modalCancle: false });
-	}
+  locationChanged = (coord) => {
+    const { navigation } = this.props;
+    const address_type = navigation.getParam("address_type");
+    // var myArray = payload.coords.toString().split(',');
+    var ll = parseFloat(coord.lat);
+    var lnn = parseFloat(coord.lng);
 
-	/** render item for address list */
-	renderItem = ({ item }) => {
-		var pickaddress = [
-			{ label: '', value: item.id },
-		]
-		return (
-			<View>
-				<View style={styles.card}>
-					<View style={styles.InnerContainer}>
-						<View style={styles.LabelContainer}>
-							<Text style={styles.LabelName}>{item.address}</Text>
-						</View>
+    var getaddressurl =
+      "https://nominatim.openstreetmap.org/reverse?format=json&lat=" +
+      ll +
+      "&lon=" +
+      lnn;
 
-						<View style={styles.ActionIconContainer}>
-							<View style={styles.radioContiner}>
-								<RadioButton
-									size={14}
-									isSelected={this.state.selectedRadioId == item.id}
-									selectedButtonColor={"green"}
-									innerColor={"green"}
-									outerColor={"green"}
-									onPress={() => { this.addressResponseBack(item.id) }}
-								/>
-							</View>
-							<TouchableOpacity style={styles.ActionIcon} onPress={() => { this.opendltModal(item.id) }}>
-								<Image source={require('../../images/Delete.png')} />
-							</TouchableOpacity>
-						</View>
-					</View>
-				</View>
-			</View>
-		)
-	}
+    var data = null;
 
-	/** address list refresh */
-	onRefresh() {
-		this.setState({ pickLocationList: [], dropLocationList: [] });
-		this.GetAddress();
-		this.clear();
-	}
-	
-	searchPickupAddress(sValue) {
-		// console.log("this.state.pickLocationListData")
-		// console.log(this.state.pickLocationListData)
-		let searchResults = []
-		if(sValue) {
-			searchResults = this.state.pickLocationListData.filter((pData) => {
-				if(pData.address.toLowerCase().includes(sValue.toLowerCase())) {
-					return pData
-				}
-			})
-		} else {
-			searchResults = this.state.pickLocationListData
-		}
-		this.setState({
-			pickLocationList: searchResults,
-			sValue: sValue
-		})
-		
-	}
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
 
-	searchDropoffAddress(sDValue) {
-		// console.log("this.state.pickLocationListData")
-		// console.log(this.state.pickLocationListData)
-		let searchResults = []
-		if(sDValue) {
-			searchResults = this.state.dropLocationListData.filter((pData) => {
-				console.log(pData.address.toLowerCase())
-				console.log(pData.address.toLowerCase().includes(sDValue.toLowerCase()))
-				if(pData.address.toLowerCase().includes(sDValue.toLowerCase())) {
-					return pData
-				}
-			})
-		} else {
-			searchResults = this.state.dropLocationListData
-		}
-		this.setState({
-			dropLocationList: searchResults,
-			sDValue: sDValue
-		})
-		
-	}
+    xhr.open(
+      "GET",
+      "https://nominatim.openstreetmap.org/reverse?format=json&lat=" +
+        ll +
+        "&lon=" +
+        lnn +
+        "&zoom=18&addressdetails=1"
+    );
+    xhr.setRequestHeader("User-Agent", "PostmanRuntime/7.20.1");
+    xhr.setRequestHeader("Accept", "*/*");
+    xhr.setRequestHeader("Cache-Control", "no-cache");
+    xhr.setRequestHeader(
+      "Postman-Token",
+      "bb71ba75-a221-4135-988e-8ee9180517ad,37e2af0b-0136-4d03-a52d-27cecb834f6a"
+    );
+    xhr.setRequestHeader("Host", "nominatim.openstreetmap.org");
+    xhr.setRequestHeader("Accept-Encoding", "gzip, deflate");
+    xhr.setRequestHeader("Connection", "keep-alive");
+    xhr.setRequestHeader("cache-control", "no-cache");
 
-	locationChanged = (coord) => {
-	
-	  
-	  const { navigation } = this.props;
-		const address_type = navigation.getParam('address_type');
-		// var myArray = payload.coords.toString().split(',');
-		var ll = parseFloat(coord.lat);
-		var lnn = parseFloat(coord.lng);
-		
+    xhr.send(data);
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        var addressData = JSON.parse(xhr.responseText);
+        this.setState({ street: "" });
+        this.setState({ landmark: "" });
+        this.setState({ city: "" });
+        this.setState({ pincode: "" });
 
-		var getaddressurl = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + ll + '&lon=' + lnn;
+        this.setState({ latitude: ll });
+        this.setState({ longitude: lnn });
 
-		var data = null;
+        var street = "";
+        var city = "";
 
-		var xhr = new XMLHttpRequest();
-		xhr.withCredentials = true;
+        /* street */
+        if (addressData.address.school) {
+          street += addressData.address.school + ",";
+        }
+        if (addressData.address.hospital) {
+          street += " " + addressData.address.hospital + ",";
+        }
+        if (addressData.address.station) {
+          street += " " + addressData.address.station + ",";
+        }
+        if (addressData.address.road) {
+          street += " " + addressData.address.road + ",";
+        }
+        if (addressData.address.neighbourhood) {
+          street += " " + addressData.address.neighbourhood + ",";
+        }
+        if (addressData.address.suburb) {
+          street += " " + addressData.address.suburb + ",";
+        }
+        if (addressData.address.hamlet) {
+          street += " " + addressData.address.hamlet + ",";
+        }
+        if (addressData.address.town) {
+          street += " " + addressData.address.town + ",";
+        }
+        /* street */
 
-		xhr.open("GET", "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + ll + "&lon=" + lnn + "&zoom=18&addressdetails=1");
-		xhr.setRequestHeader("User-Agent", "PostmanRuntime/7.20.1");
-		xhr.setRequestHeader("Accept", "*/*");
-		xhr.setRequestHeader("Cache-Control", "no-cache");
-		xhr.setRequestHeader("Postman-Token", "bb71ba75-a221-4135-988e-8ee9180517ad,37e2af0b-0136-4d03-a52d-27cecb834f6a");
-		xhr.setRequestHeader("Host", "nominatim.openstreetmap.org");
-		xhr.setRequestHeader("Accept-Encoding", "gzip, deflate");
-		xhr.setRequestHeader("Connection", "keep-alive");
-		xhr.setRequestHeader("cache-control", "no-cache");
+        /* city */
+        if (addressData.address.city) {
+          city += " " + addressData.address.city + ",";
+        }
+        if (addressData.address.state_district) {
+          city += " " + addressData.address.state_district + ",";
+        }
+        /* city */
 
-		xhr.send(data);
-		xhr.onreadystatechange = () => {
-			if (xhr.readyState === 4) {
-				var addressData = JSON.parse(xhr.responseText);
-				this.setState({ street: '' });
-				this.setState({ landmark: '' });
-				this.setState({ city: '' });
-				this.setState({ pincode: '' });
+        this.setState({ street: street });
+        this.setState({ city: city });
 
-				this.setState({ latitude: ll });
-				this.setState({ longitude: lnn });
+        /* landmark */
+        if (addressData.address.county) {
+          this.setState({ landmark: addressData.address.county });
+        }
+        /* landmark */
 
-				var street = '';
-				var city = '';
+        if (addressData.address.postcode) {
+          let pincodeNumber = addressData.address.postcode;
+          pincodeNumber = pincodeNumber.replace(/\s/g, "");
+          pincodeNumber = pincodeNumber
+            .replace(/[^a-z0-9\s]/gi, "")
+            .replace(/[_\s]/g, "-");
 
-				/* street */
-				if (addressData.address.school) {
-					street += addressData.address.school + ',';
-				}
-				if (addressData.address.hospital) {
-					street += ' ' + addressData.address.hospital + ',';
-				}
-				if (addressData.address.station) {
-					street += ' ' + addressData.address.station + ',';
-				}
-				if (addressData.address.road) {
-					street += ' ' + addressData.address.road + ',';
-				}
-				if (addressData.address.neighbourhood) {
-					street += ' ' + addressData.address.neighbourhood + ',';
-				}
-				if (addressData.address.suburb) {
-					street += ' ' + addressData.address.suburb + ',';
-				}
-				if (addressData.address.hamlet) {
-					street += ' ' + addressData.address.hamlet + ',';
-				}
-				if (addressData.address.town) {
-					street += ' ' + addressData.address.town + ',';
-				}
-				/* street */
+          this.setState({ pincode: pincodeNumber });
+        }
+        if (addressData.address.state) {
+          this.setState({ state: addressData.address.state });
+        }
 
-				/* city */
-				if (addressData.address.city) {
-					city += ' ' + addressData.address.city + ',';
-				}
-				if (addressData.address.state_district) {
-					city += ' ' + addressData.address.state_district + ',';
-				}
-				/* city */
+        if (addressData.address.country) {
+          this.setState({ country: addressData.address.country });
+        }
+      }
+    };
+  };
+  render() {
+    const { navigate } = this.props.navigation;
+    const { loading } = this.state;
 
-				this.setState({ street: street });
-				this.setState({ city: city });
-
-				/* landmark */
-				if (addressData.address.county) {
-					this.setState({ landmark: addressData.address.county });
-				}
-				/* landmark */
-
-				if (addressData.address.postcode) {
-					let pincodeNumber = addressData.address.postcode;
-					pincodeNumber = pincodeNumber.replace(/\s/g, '');
-					pincodeNumber = pincodeNumber.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
-
-					this.setState({ pincode: pincodeNumber });
-				}
-				if (addressData.address.state) {
-					this.setState({ state: addressData.address.state });
-				}
-
-				if (addressData.address.country) {
-					this.setState({ country: addressData.address.country });
-				}
-			}
-		}
-
-	}
-	render() {
-		const { navigate } = this.props.navigation;
-		const { loading } = this.state;
-
-		if (!loading) {
-			return (
-				<KeyboardAvoidingView behavior={Platform.select({ android: 'height', ios:'padding' })} style={{ flex: 1 }} >
-					
-					{ /* <Row style={{height: '49%',}}>
+    if (!loading) {
+      return (
+        <KeyboardAvoidingView
+          behavior={Platform.select({ android: "height", ios: "padding" })}
+          style={{ flex: 1 }}
+        >
+          {/* <Row style={{height: '49%',}}>
 						<Col>
 							{  <Map parentMethod={this.locationChanged}/>  }
 						</Col>
-					</Row> */ }
+					</Row> */}
 
-				<ScrollView style={{flexGrow: 1 ,}}>
-					<Row style={{height: '45%',}}>
-						<Col style={{marginBottom: '30%',}}>
-								<View style={styles.AddressHeader}>
-									<Text style={styles.AddressHeaderText}>Add Address</Text>
-								</View>
+          <ScrollView style={{ flexGrow: 1 }}>
+            <Row style={{ height: "45%" }}>
+              <Col style={{ marginBottom: "30%" }}>
+                <View style={styles.AddressHeader}>
+                  <Text style={styles.AddressHeaderText}>Add Address</Text>
+                </View>
 
-									<View style={styles.input}>
-										<TextInput style={styles.textbox}
-											placeholder="Enter Street Name"
-											onChangeText={(street) => this.setAddressData(street)}
-											value={this.state.street}
-										>
-										</TextInput>
-									</View>
-									{this.state.street_Err ? <Text style={styles.error}>{this.state.street_Err}</Text> : null}
+                <View style={styles.input}>
+                  <TextInput
+                    style={styles.textbox}
+                    placeholder="Enter Street Name"
+                    onChangeText={(street) => this.setAddressData(street)}
+                    value={this.state.street}
+                  ></TextInput>
+                </View>
+                {this.state.street_Err ? (
+                  <Text style={styles.error}>{this.state.street_Err}</Text>
+                ) : null}
 
-									<View style={styles.input}>
-										<TextInput style={styles.textbox}
-											placeholder="Enter Landmark"
-											onChangeText={(landmark) => this.setState({ landmark })}
-											value={this.state.landmark}
-										>
-										</TextInput>
-									</View>
-									{this.state.landmark_Err ? <Text style={styles.error}>{this.state.landmark_Err}</Text> : null}
+                <View style={styles.input}>
+                  <TextInput
+                    style={styles.textbox}
+                    placeholder="Enter Landmark"
+                    onChangeText={(landmark) => this.setState({ landmark })}
+                    value={this.state.landmark}
+                  ></TextInput>
+                </View>
+                {this.state.landmark_Err ? (
+                  <Text style={styles.error}>{this.state.landmark_Err}</Text>
+                ) : null}
 
-									<View style={styles.TwoInputTogether}>
-										<View style={styles.Cityinput}>
-											<TextInput style={styles.textbox}
-												placeholder="Enter City Name"
-												onChangeText={(city) => this.setState({ city })}
-												value={this.state.city}
-											>
-											</TextInput>
-										</View>
+                <View style={styles.TwoInputTogether}>
+                  <View style={styles.Cityinput}>
+                    <TextInput
+                      style={styles.textbox}
+                      placeholder="Enter City Name"
+                      onChangeText={(city) => this.setState({ city })}
+                      value={this.state.city}
+                    ></TextInput>
+                  </View>
 
+                  <View style={styles.Pincodeinput}>
+                    <TextInput
+                      style={styles.textbox}
+                      placeholder="Enter Pincode"
+                      onChangeText={(pincode) => this.setState({ pincode })}
+                      maxLength={10}
+                      value={this.state.pincode}
+                      keyboardType="numeric"
+                    ></TextInput>
+                  </View>
+                </View>
+                <View style={styles.TwoInputTogether}>
+                  <View style={{ width: "50%" }}>
+                    {this.state.city_Err ? (
+                      <Text style={styles.errorcity}>
+                        {this.state.city_Err}
+                      </Text>
+                    ) : null}
+                  </View>
+                  <View style={{ width: "50%" }}>
+                    {this.state.pincode_Err ? (
+                      <Text style={styles.errorcity}>
+                        {this.state.pincode_Err}
+                      </Text>
+                    ) : null}
+                  </View>
+                </View>
+                <View style={styles.input}>
+                  <TextInput
+                    style={styles.textbox}
+                    placeholder="Enter Receiver Name"
+                    onChangeText={(receiver_name) =>
+                      this.setState({ receiver_name })
+                    }
+                    value={this.state.receiver_name}
+                  ></TextInput>
+                </View>
+                <View style={styles.input}>
+                  <TextInput
+                    style={styles.textbox}
+                    placeholder="Enter Receiver Contact"
+                    onChangeText={(receiver_contact) =>
+                      this.setState({ receiver_contact })
+                    }
+                    maxLength={10}
+                    value={this.state.receiver_contact}
+                    keyboardType="numeric"
+                  ></TextInput>
+                </View>
+                {this.state.latitude && (
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={{ width: "50%", fontSize: 16 }}>
+                      Lat: {this.state.latitude}
+                    </Text>
+                    <Text style={{ width: "50%", fontSize: 16 }}>
+                      Long: {this.state.longitude}
+                    </Text>
+                  </View>
+                )}
+                <View style={styles.SubmitButtonContainer}>
+                  <TouchableOpacity
+                    style={styles.SubmitButton}
+                    onPress={() => this.submit()}
+                  >
+                    <Text style={styles.btntext}>Add Address</Text>
+                  </TouchableOpacity>
+                </View>
+              </Col>
+            </Row>
+          </ScrollView>
+          <View style={{ flex: 1, padding: 0 }}>
+            <View style={{ flex: 1, justifyContent: "flex-start" }}>
+              <SlidingUpPanel
+                style={{ zIndex: 99999 }}
+                ref={(c) => (this._panel = c)}
+                draggableRange={{ top: height / 1.3, bottom: 45 }}
+                animatedValue={this._draggedValue}
+                showBackdrop={true}
+              >
+                <Row
+                  style={{
+                    backgroundColor: colorPrimary,
+                    height: "5%",
+                    marginLeft: "15%",
+                    marginRight: "15%",
+                    borderTopLeftRadius: 50,
+                    borderTopRightRadius: 50,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={{ fontSize: 18, color: "white" }}>
+                    Select Address
+                  </Text>
+                </Row>
+                <View style={styles.panel}>
+                  <View style={[styles.slidContent, { height: height / 1.6 }]}>
+                    <ScrollView
+                      refreshControl={
+                        <RefreshControl
+                          colors={[colorPrimary]}
+                          refreshing={this.state.loading}
+                          onRefresh={this.onRefresh.bind(this)}
+                        />
+                      }
+                    >
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <View
+                          style={{
+                            backgroundColor: "white",
+                            borderRadius: 10,
+                            width: "90%",
+                            padding: 5,
+                          }}
+                        >
+                          <TextInput
+                            style={styles.textbox}
+                            placeholder="Search Address"
+                            onChangeText={(sValue) =>
+                              this.searchPickupAddress(sValue)
+                            }
+                            value={this.state.sValue}
+                          ></TextInput>
+                        </View>
+                      </View>
 
-										<View style={styles.Pincodeinput}>
-											<TextInput style={styles.textbox}
-												placeholder="Enter Pincode"
-												onChangeText={(pincode) => this.setState({ pincode })}
-												maxLength={10}
-												value={this.state.pincode}
-												keyboardType="numeric">
-											</TextInput>
-										</View>
-
-									</View>
-									<View style={styles.TwoInputTogether}>
-										<View style={{width:'50%'}}>
-											{this.state.city_Err ? <Text style={styles.errorcity}>{this.state.city_Err}</Text> : null}
-										</View>
-										<View style={{width:'50%'}}>
-											{this.state.pincode_Err ? <Text style={styles.errorcity}>{this.state.pincode_Err}</Text> : null}
-										</View>
-									</View>
-									<View style={styles.input}>
-										<TextInput style={styles.textbox}
-											placeholder="Enter Receiver Name"
-											onChangeText={(receiver_name) => this.setState({ receiver_name })}
-											value={this.state.receiver_name}
-										>
-										</TextInput>
-									</View>
-									<View style={styles.input}>
-										<TextInput style={styles.textbox}
-											placeholder="Enter Receiver Contact"
-											onChangeText={(receiver_contact) => this.setState({ receiver_contact })}
-											maxLength={10}
-											value={this.state.receiver_contact}
-											keyboardType="numeric"
-										>
-										</TextInput>
-									</View>
-									{
-										this.state.latitude &&
-										<View style={{flexDirection: 'row'}}>
-											<Text style={{width: '50%', fontSize: 16}}>Lat: {this.state.latitude}</Text>
-											<Text style={{width: '50%', fontSize: 16}}>Long: {this.state.longitude}</Text>
-										</View>
-									}
-									<View style={styles.SubmitButtonContainer}>
-										<TouchableOpacity
-											style={styles.SubmitButton}
-											onPress={() => this.submit()}>
-											<Text style={styles.btntext}>Add Address</Text>
-										</TouchableOpacity>
-
-									</View>
-						</Col>
-					</Row>
-				</ScrollView>
-					<View style={{ flex: 1, padding: 0, }}>
-						<View style={{ flex: 1, justifyContent: 'flex-start' }}>
-							<SlidingUpPanel 
-								style={{ zIndex: 99999 }}
-								ref={c => (this._panel = c)}
-								draggableRange={{ top: height / 1.30, bottom: 45}}
-								animatedValue={this._draggedValue}
-								showBackdrop={true}>
-									<Row style={{backgroundColor: colorPrimary , height: '5%' , marginLeft: '15%' , marginRight: '15%', borderTopLeftRadius: 50,borderTopRightRadius: 50, justifyContent:'center', alignItems: 'center',}}>
-										<Text style={{fontSize: 18 , color: 'white' ,}}>Select Address</Text>
-									</Row>
-								 <View style={styles.panel}>
-									
-									<View style={[styles.slidContent, { height: height / 1.6 }]}>
-										<ScrollView
-											refreshControl={
-												<RefreshControl colors={[colorPrimary]} refreshing={this.state.loading}
-													onRefresh={this.onRefresh.bind(this)} />
-											}>
-											
-												<View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-													<View style={{backgroundColor: 'white', borderRadius: 10, width: '90%', padding: 5}}>
-														<TextInput style={styles.textbox}
-															placeholder="Search Address"
-															onChangeText={(sValue) => this.searchPickupAddress(sValue)}
-															value={this.state.sValue}
-														>
-														</TextInput>
-													</View>
-												</View>
-											
-												<FlatList
-													data={this.state.pickLocationList}
-													renderItem={this.renderItem}
-													keyExtractor={item => item.id.toString()}
-													ListEmptyComponent={
-														<EmptyComponent title="Data not available." />
-													}
-													refreshControl={
-														<RefreshControl colors={[colorPrimary]} refreshing={this.state.loading}
-															onRefresh={this.onRefresh.bind(this)} />
-													}
-												/>
-											{/*
+                      <FlatList
+                        data={this.state.pickLocationList}
+                        renderItem={this.renderItem}
+                        keyExtractor={(item) => item.id.toString()}
+                        ListEmptyComponent={
+                          <EmptyComponent title="Data not available." />
+                        }
+                        refreshControl={
+                          <RefreshControl
+                            colors={[colorPrimary]}
+                            refreshing={this.state.loading}
+                            onRefresh={this.onRefresh.bind(this)}
+                          />
+                        }
+                      />
+                      {/*
 												this.state.address_type == 'Drop-off' &&
 												<View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
 													<View>
@@ -695,9 +829,8 @@ class Address extends Component {
 													</View>
 												</View>
 											*/}
-											
-											
-											{/*
+
+                      {/*
 												this.state.address_type == 'Drop-off' &&
 												<FlatList
 													data={this.state.dropLocationList}
@@ -712,389 +845,402 @@ class Address extends Component {
 													}
 												/>
 											*/}
-											
-										</ScrollView>
-									</View>
-											</View>
-							</SlidingUpPanel>
-						</View>
-						<Modal
-							animationType="slide"
-							transparent={false}
-							visible={this.state.modalCancle}
-							onRequestClose={() => {
-								alert('Modal has been closed.');
-							}}>
-							<View style={styles.modalcancel}>
-								<View>
-									<View style={styles.ModalHeaderContainer}>
-										<Text style={styles.ModalHeaderText}>Delete Address</Text>
-									</View>
-									<View style={styles.ModalContentContainer}>
-										<Text style={styles.ContentText}>Are you sure you want to delete address? </Text>
-									</View>
-									<View style={styles.ModalActionCancelContainer}>
-										<TouchableHighlight
-											style={styles.ModalOkButton}
-											onPress={() => { this.deleteAddess() }}>
-											<Text style={styles.modalbtn}>Yes</Text>
-										</TouchableHighlight>
-										<TouchableHighlight style={styles.ModalCancelButton}
-											onPress={() => {
-												this.closeModal();
-											}}>
-											<Text style={styles.modalbtn}>No</Text>
-										</TouchableHighlight>
-									</View>
-								</View>
-							</View>
-
-						</Modal>
-					</View>
-			</KeyboardAvoidingView>
-
-			);
-		} else {
-			return <ActivityIndicator style={styles.loading} size='large' color={colorPrimary} />
-		}
-	}
+                    </ScrollView>
+                  </View>
+                </View>
+              </SlidingUpPanel>
+            </View>
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.modalCancle}
+              onRequestClose={() => {
+                alert("Modal has been closed.");
+              }}
+            >
+              <View style={styles.modalcancel}>
+                <View>
+                  <View style={styles.ModalHeaderContainer}>
+                    <Text style={styles.ModalHeaderText}>Delete Address</Text>
+                  </View>
+                  <View style={styles.ModalContentContainer}>
+                    <Text style={styles.ContentText}>
+                      Are you sure you want to delete address?{" "}
+                    </Text>
+                  </View>
+                  <View style={styles.ModalActionCancelContainer}>
+                    <TouchableHighlight
+                      style={styles.ModalOkButton}
+                      onPress={() => {
+                        this.deleteAddess();
+                      }}
+                    >
+                      <Text style={styles.modalbtn}>Yes</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                      style={styles.ModalCancelButton}
+                      onPress={() => {
+                        this.closeModal();
+                      }}
+                    >
+                      <Text style={styles.modalbtn}>No</Text>
+                    </TouchableHighlight>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+          </View>
+        </KeyboardAvoidingView>
+      );
+    } else {
+      return (
+        <ActivityIndicator
+          style={styles.loading}
+          size="large"
+          color={colorPrimary}
+        />
+      );
+    }
+  }
 }
 
-export default withNavigation(Address)
+export default withNavigation(Address);
 
 /** empty list messge */
 const EmptyComponent = ({ title }) => (
-	<View style={styles.emptyContainer}>
-		<Text style={styles.emptyText}>{title}</Text>
-	</View>
+  <View style={styles.emptyContainer}>
+    <Text style={styles.emptyText}>{title}</Text>
+  </View>
 );
 
 /** style of page */
-const { height } = Dimensions.get('window')
+const { height } = Dimensions.get("window");
 const styles = StyleSheet.create({
-	emptyContainer: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginTop: '3%',
-		marginBottom: '3%'
-	},
-	emptyText: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		fontSize: 18,
-		color: '#ffffff'
-	},
-	HeaderTextArea: {
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	HeaderText: {
-		marginLeft: 30,
-		color: colorPrimary,
-		fontSize: 25,
-		fontWeight: 'bold'
-	},
-	MainContainer: {
-		flex: 1,
-		//height : height-89
-		height: height - 100
-	},
-	MapContainer: {
-		//height: 10,
-		borderWidth: 1,
-		borderRadius: 5,
-		borderColor: "rgba(119,119,119,0.6)",
-		flex: 1, justifyContent: "center", alignItems: "center"
-	},
-	Maplabel: {
-		textAlignVertical: "center", textAlign: "center",
-		fontWeight: 'bold',
-		fontSize: 18,
-		marginTop: 0,
-		backgroundColor: 'yellow'
-	},
-	map: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		bottom: 0,
-	},
-	AddressContainer: {
-		padding: "5%",
-		height: 370,
-	},
-	input: {
-		flexDirection: 'row',
-		borderBottomWidth: 1,
-		borderColor: "rgba(119,119,119,0.6)",
-		marginTop: 3
-	},
-	textbox: {
-		paddingLeft: 10,
-		width: '100%',
-
-	},
-	AddressHeaderText: {
-		fontSize: 20,
-		color: colorPrimary,
-		fontWeight: '400'
-	},
-	TwoInputTogether: {
-		flexDirection: 'row',
-		marginTop: 3
-	},
-	Cityinput: {
-		marginRight: 10,
-		width: '50%',
-		flexDirection: 'row',
-		borderBottomWidth: 1,
-		borderColor: "rgba(119,119,119,0.6)",
-	},
-	Pincodeinput: {
-		flexDirection: 'row',
-		width: '47%',
-		borderBottomWidth: 1,
-		borderColor: "rgba(119,119,119,0.6)",
-	},
-	SubmitButtonContainer: {
-		marginTop: "10%",
-		alignItems: 'center'
-	},
-	SubmitButton: {
-		borderWidth: 1,
-		backgroundColor: colorPrimary,
-		borderRadius: 5,
-		borderColor: colorPrimary,
-		paddingTop: 8,
-		marginTop: 9,
-		width: 180,
-		height: 40,
-		textAlign: "center"
-	},
-	btntext: {
-		textAlign: 'center',
-		color: '#ffffff',
-		fontSize: 18,
-	},
-	error: {
-		left: 15,
-		color: colorPrimary,
-		fontSize: 13,
-		marginBottom: 1
-	},
-	errorleft: {
-		left: 22,
-		color: colorPrimary,
-		fontSize: 13,
-		marginBottom: 1,
-		width: "47%"
-	},
-	errorcity: {
-		left: 15,
-		color: colorPrimary,
-		fontSize: 13,
-		marginBottom: 1,
-	},
-	errorright: {
-		left: '310%',
-		color: colorPrimary,
-		fontSize: 13,
-		marginBottom: 1,
-		width: "47%"
-	},
-	panel: {
-		flex: 1,
-		backgroundColor: colorPrimary,
-		position: 'relative',
-		bottom: 0,
-		zIndex: 999999,
-	},
-	panelHeader: {
-		position: 'absolute',
-		backgroundColor: colorPrimary,
-		borderTopLeftRadius: 50,
-		borderTopRightRadius: 50,
-		// top: -30,
-		// bottom: 20,
-		// left: 46,
-		// height: 40,
-		marginRight: '10%',
-		marginLeft: '10%',
-	},
-	btntxt: {
-		marginTop: 10,
-		textAlign: 'center',
-		color: '#ffffff',
-		fontSize: 18,
-		fontWeight: '400',
-	},
-	slidContent: {
-		marginTop: 40
-	},
-	FormContainer: {
-		marginTop: 50,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	picktext: {
-		color: "white",
-		fontSize: 14,
-		marginLeft: 14
-	},
-	dropoffText: {
-		color: "white",
-		fontSize: 14,
-		marginLeft: 14,
-		marginTop: 15,
-	},
-	card: {
-		marginTop: 12,
-		marginLeft: 10,
-		marginRight: 10,
-		paddingTop: 10,
-		paddingBottom: 10,
-		paddingRight: 10,
-		borderWidth: 1,
-		backgroundColor: '#ffffff',
-		borderRadius: 9,
-		borderColor: '#ffffff',
-		shadowColor: "#777",
-		shadowOffset: { width: 0, height: 1, },
-		shadowOpacity: 0.1,
-		shadowRadius: 4.22,
-		elevation: 2,
-		marginBottom: 2
-	},
-	ItemHeader: {
-		color: '#333333',
-		fontWeight: '500',
-		fontSize: 17
-	},
-	InnerContainer: {
-		flexDirection: 'row',
-		alignItems: 'flex-start'
-	},
-	ActionIconContainer: {
-		alignItems: 'flex-end',
-		flexDirection: 'row',
-		width: "15%",
-		marginRight: 7
-	},
-	ActionIcon: {
-		marginRight: 10,
-		paddingBottom: 7,
-		paddingTop: 7,
-		paddingLeft: 7,
-		paddingRight: 7,
-		borderRadius: 2,
-		backgroundColor: colorPrimary,
-	},
-	LabelContainer: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'flex-start',
-		width: "90%"
-	},
-	LabelName: {
-		marginLeft: 5,
-		fontSize: 15,
-		fontWeight: '400',
-		color: '#777777'
-	},
-	loading: {
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		top: 0,
-		bottom: 0,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	modal: {
-		position: 'absolute',
-		top: 50,
-		left: 30,
-		backgroundColor: '#FFFFFF',
-		height: 480,
-		width: 300,
-		borderRadius: 9,
-		shadowColor: "#777",
-		shadowOffset: { width: 0, height: 1, },
-		shadowOpacity: 0.5,
-		shadowRadius: 6.22,
-		elevation: 5,
-	},
-	ModalHeaderContainer: {
-		height: 40,
-		borderTopLeftRadius: 9,
-		borderTopRightRadius: 9,
-		backgroundColor: colorPrimary,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	ModalHeaderText: {
-		color: '#FFFFFF',
-		fontSize: 18
-	},
-	ModalContentContainer: {
-		padding: 20,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	modalcancel: {
-		position: 'absolute',
-		top: 250,
-		left: 30,
-		backgroundColor: '#FFFFFF',
-		height: 160,
-		width: 300,
-		borderRadius: 9,
-		shadowColor: "#777",
-		shadowOffset: { width: 0, height: 1, },
-		shadowOpacity: 0.5,
-		shadowRadius: 6.22,
-		elevation: 5,
-	},
-	ModalActionCancelContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginTop: 7
-	},
-	modalbtn: {
-		color: "white"
-	},
-	ContentText: {
-		fontSize: 14,
-		color: '#777777'
-	},
-	ModalActionButtonContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginTop: 20
-	},
-	ModalOkButton: {
-		height: 35,
-		width: 70,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: 'green',
-		borderRadius: 5
-	},
-	ModalCancelButton: {
-		height: 35,
-		width: 70,
-		marginLeft: 15,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: colorPrimary,
-		borderRadius: 5
-	},
-	radioContiner: {
-		marginRight: 8,
-	}
+  emptyContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "3%",
+    marginBottom: "3%",
+  },
+  emptyText: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 18,
+    color: "#ffffff",
+  },
+  HeaderTextArea: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  HeaderText: {
+    marginLeft: 30,
+    color: colorPrimary,
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  MainContainer: {
+    flex: 1,
+    //height : height-89
+    height: height - 100,
+  },
+  MapContainer: {
+    //height: 10,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "rgba(119,119,119,0.6)",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  Maplabel: {
+    textAlignVertical: "center",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 18,
+    marginTop: 0,
+    backgroundColor: "yellow",
+  },
+  map: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  AddressContainer: {
+    padding: "5%",
+    height: 370,
+  },
+  input: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderColor: "rgba(119,119,119,0.6)",
+    marginTop: 3,
+  },
+  textbox: {
+    paddingLeft: 10,
+    width: "100%",
+  },
+  AddressHeaderText: {
+    fontSize: 20,
+    color: colorPrimary,
+    fontWeight: "400",
+  },
+  TwoInputTogether: {
+    flexDirection: "row",
+    marginTop: 3,
+  },
+  Cityinput: {
+    marginRight: 10,
+    width: "50%",
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderColor: "rgba(119,119,119,0.6)",
+  },
+  Pincodeinput: {
+    flexDirection: "row",
+    width: "47%",
+    borderBottomWidth: 1,
+    borderColor: "rgba(119,119,119,0.6)",
+  },
+  SubmitButtonContainer: {
+    marginTop: "10%",
+    alignItems: "center",
+  },
+  SubmitButton: {
+    borderWidth: 1,
+    backgroundColor: colorPrimary,
+    borderRadius: 5,
+    borderColor: colorPrimary,
+    paddingTop: 8,
+    marginTop: 9,
+    width: 180,
+    height: 40,
+    textAlign: "center",
+  },
+  btntext: {
+    textAlign: "center",
+    color: "#ffffff",
+    fontSize: 18,
+  },
+  error: {
+    left: 15,
+    color: colorPrimary,
+    fontSize: 13,
+    marginBottom: 1,
+  },
+  errorleft: {
+    left: 22,
+    color: colorPrimary,
+    fontSize: 13,
+    marginBottom: 1,
+    width: "47%",
+  },
+  errorcity: {
+    left: 15,
+    color: colorPrimary,
+    fontSize: 13,
+    marginBottom: 1,
+  },
+  errorright: {
+    left: "310%",
+    color: colorPrimary,
+    fontSize: 13,
+    marginBottom: 1,
+    width: "47%",
+  },
+  panel: {
+    flex: 1,
+    backgroundColor: colorPrimary,
+    position: "relative",
+    bottom: 0,
+    zIndex: 999999,
+  },
+  panelHeader: {
+    position: "absolute",
+    backgroundColor: colorPrimary,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    // top: -30,
+    // bottom: 20,
+    // left: 46,
+    // height: 40,
+    marginRight: "10%",
+    marginLeft: "10%",
+  },
+  btntxt: {
+    marginTop: 10,
+    textAlign: "center",
+    color: "#ffffff",
+    fontSize: 18,
+    fontWeight: "400",
+  },
+  slidContent: {
+    marginTop: 40,
+  },
+  FormContainer: {
+    marginTop: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  picktext: {
+    color: "white",
+    fontSize: 14,
+    marginLeft: 14,
+  },
+  dropoffText: {
+    color: "white",
+    fontSize: 14,
+    marginLeft: 14,
+    marginTop: 15,
+  },
+  card: {
+    marginTop: 12,
+    marginLeft: 10,
+    marginRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 10,
+    borderWidth: 1,
+    backgroundColor: "#ffffff",
+    borderRadius: 9,
+    borderColor: "#ffffff",
+    shadowColor: "#777",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4.22,
+    elevation: 2,
+    marginBottom: 2,
+  },
+  ItemHeader: {
+    color: "#333333",
+    fontWeight: "500",
+    fontSize: 17,
+  },
+  InnerContainer: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  ActionIconContainer: {
+    alignItems: "flex-end",
+    flexDirection: "row",
+    width: "15%",
+    marginRight: 7,
+  },
+  ActionIcon: {
+    marginRight: 10,
+    paddingBottom: 7,
+    paddingTop: 7,
+    paddingLeft: 7,
+    paddingRight: 7,
+    borderRadius: 2,
+    backgroundColor: colorPrimary,
+  },
+  LabelContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    width: "90%",
+  },
+  LabelName: {
+    marginLeft: 5,
+    fontSize: 15,
+    fontWeight: "400",
+    color: "#777777",
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modal: {
+    position: "absolute",
+    top: 50,
+    left: 30,
+    backgroundColor: "#FFFFFF",
+    height: 480,
+    width: 300,
+    borderRadius: 9,
+    shadowColor: "#777",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6.22,
+    elevation: 5,
+  },
+  ModalHeaderContainer: {
+    height: 40,
+    borderTopLeftRadius: 9,
+    borderTopRightRadius: 9,
+    backgroundColor: colorPrimary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  ModalHeaderText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+  },
+  ModalContentContainer: {
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalcancel: {
+    position: "absolute",
+    top: 250,
+    left: 30,
+    backgroundColor: "#FFFFFF",
+    height: 160,
+    width: 300,
+    borderRadius: 9,
+    shadowColor: "#777",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6.22,
+    elevation: 5,
+  },
+  ModalActionCancelContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 7,
+  },
+  modalbtn: {
+    color: "white",
+  },
+  ContentText: {
+    fontSize: 14,
+    color: "#777777",
+  },
+  ModalActionButtonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  ModalOkButton: {
+    height: 35,
+    width: 70,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "green",
+    borderRadius: 5,
+  },
+  ModalCancelButton: {
+    height: 35,
+    width: 70,
+    marginLeft: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colorPrimary,
+    borderRadius: 5,
+  },
+  radioContiner: {
+    marginRight: 8,
+  },
 });
