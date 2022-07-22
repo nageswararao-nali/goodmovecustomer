@@ -50,14 +50,14 @@ export default class MyBooking extends Component {
                 <View style={styles.contentsub}>
                   <Text style={styles.subtitle}>Privacy Policy</Text>
                   <Text style={styles.contentText}>
-                    This privacy policy sets out how G-O uses and protects any
-                    information that you share when you use this mobile app/
+                    This privacy policy sets out how GoodMove uses and protects
+                    any information that you share when you use this mobile app/
                     platform.
                   </Text>
                   <Text style={styles.contentText}>
                     {" "}
                     The following Terms &amp; Conditions shall apply to
-                    customers utilising the Services offered by the G-O;
+                    customers utilising the Services offered by the GoodMove;
                   </Text>
                 </View>
 
@@ -70,7 +70,7 @@ export default class MyBooking extends Component {
                     hereinafter imposed by the law or required to be paid for
                     availing of the transport Services. The customer agrees and
                     accepts that the use of our Services is at the sole risk of
-                    the Customer, and further acknowledges that the G-O
+                    the Customer, and further acknowledges that the GoodMove
                     disclaims all representations and warranties of any kind,
                     whether express or implied.
                   </Text>
@@ -101,33 +101,33 @@ export default class MyBooking extends Component {
                       indemnify Company from and against and in respect of any
                       or all liabilities, losses, charges and expenses
                       (including legal fees and costs on a full indemnity basis)
-                      claims, demands, actions and proceedings which G-O may
-                      incur or sustain directly or indirectly from or by any
+                      claims, demands, actions and proceedings which GoodMove
+                      may incur or sustain directly or indirectly from or by any
                       reason of or in relation to the use or proposed use of the
                       Services by the Customer and shall pay such sums on demand
-                      on the G-O.
+                      on the GoodMove.
                     </Text>
                   </View>
 
                   <Text style={styles.contentText}>
                     {" "}
-                    G-O shall be entitled to disclose to all companies within
-                    its group, or any government body as so required by the law
-                    or by directive or request from any government body, the
-                    particulars of the Customer in the possession of Company in
-                    any way as Company, in its absolute discretion, deems fit or
-                    if it considers it in its interests to do so. G-O shall be
-                    entitled at any time without giving any reason to terminate
-                    the booking to transport the consignment done by the
-                    Customer. User(s) shall indemnify G-O with respect to any
-                    expenses incurred with respect to such booking.
+                    GoodMove shall be entitled to disclose to all companies
+                    within its group, or any government body as so required by
+                    the law or by directive or request from any government body,
+                    the particulars of the Customer in the possession of Company
+                    in any way as Company, in its absolute discretion, deems fit
+                    or if it considers it in its interests to do so. GoodMove
+                    shall be entitled at any time without giving any reason to
+                    terminate the booking to transport the consignment done by
+                    the Customer. User(s) shall indemnify GoodMove with respect
+                    to any expenses incurred with respect to such booking.
                   </Text>
                   <Text style={styles.contentText}>
                     {" "}
                     In case of lost items inside the consolidation centre or
-                    during the journey, G-O will try to locate the items on a &
-                    quot;best-effort & quot; basis but is not responsible for
-                    the same in case of loss or damage to the same. G-O
+                    during the journey, GoodMove will try to locate the items on
+                    a & quot;best-effort & quot; basis but is not responsible
+                    for the same in case of loss or damage to the same. GoodMove
                     aggregates its vehicles for the purposes of providing
                     services. In the event of loss of any item, User(s) shall
                     not have any right to withhold the payment to be made
@@ -135,19 +135,19 @@ export default class MyBooking extends Component {
                     Any complaint in respect of the Services or the use of the
                     freight vehicle, the Customer has to inform customer care of
                     the same in writing within 24hours of using the freight
-                    vehicle or the Services of G-O.
+                    vehicle or the Services of GoodMove.
                   </Text>
                   <Text style={styles.contentText}>
                     {" "}
-                    G-O shall not be liable for any conduct of the drivers of
-                    freight vehicles. However, the G-O encourages you to notify
-                    it of any complaints that you may have against the driver
-                    that you may have hired using our Services.
+                    GoodMove shall not be liable for any conduct of the drivers
+                    of freight vehicles. However, the GoodMove encourages you to
+                    notify it of any complaints that you may have against the
+                    driver that you may have hired using our Services.
                   </Text>
                   <Text style={styles.contentText}>
                     {" "}
-                    G-O shall be entitled to add to, vary or amend any or all
-                    these terms and conditions at any time and the Customer
+                    GoodMove shall be entitled to add to, vary or amend any or
+                    all these terms and conditions at any time and the Customer
                     shall be bound by such addition, variation or amendment once
                     such addition, variation or amendment are incorporated into
                     these terms and conditions

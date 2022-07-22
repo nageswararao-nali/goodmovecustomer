@@ -70,8 +70,8 @@ export default class MyBooking extends Component {
                 </Text>
 
                 <Text style={styles.contentText}>
-                  G-O app is an initiative to consolidate freight in-order to
-                  decrease the number of less than truckload trips and reduce
+                  GoodMove app is an initiative to consolidate freight in-order
+                  to decrease the number of less than truckload trips and reduce
                   road congestion and emission of GHGs.
                 </Text>
 
