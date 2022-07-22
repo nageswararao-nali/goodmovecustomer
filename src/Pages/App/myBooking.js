@@ -958,7 +958,7 @@ const styles = StyleSheet.create({
     width: 110,
     height: 40,
     textAlign: "center",
-    marginTop: "135%",
+    marginTop: "128%",
     marginLeft: "17%",
     marginRight: "-17%",
     marginBottom: "14%",
@@ -996,7 +996,7 @@ const styles = StyleSheet.create({
   combine: {
     flexDirection: "row",
     paddingLeft: 20,
-    marginBottom: 10,
+    marginBottom: 2,
   },
   label: {
     width: "38%",
