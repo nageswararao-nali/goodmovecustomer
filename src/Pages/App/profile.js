@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 40,
     textAlign: "center",
-    marginLeft: "2%",
+    marginLeft: "-1%",
   },
   button1: {
     borderRadius: 5,
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
     width: 180,
     height: 40,
     textAlign: "center",
-    marginLeft: "48%",
+    marginLeft: "50%",
   },
   btntext: {
     textAlign: "center",

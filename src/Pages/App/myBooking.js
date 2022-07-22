@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NavigationDrawerStructure from "./navigationdrawerstructure";
 import LogoImage from "../../Components/applogo";
+import { LinearGradient } from "expo-linear-gradient";
 
 import {
   StyleSheet,
@@ -450,7 +451,17 @@ class MyBooking extends Component {
                       this.openAcceptPaymentModal(item.id, item.quotation_id);
                     }}
                   >
-                    <Text style={styles.btnTxt}>Payment</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 32,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Payment</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
@@ -458,7 +469,17 @@ class MyBooking extends Component {
                     }}
                     style={styles.cancelbtn}
                   >
-                    <Text style={styles.btnTxt}>Cancel</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 32,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Cancel</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
               ) : null}
@@ -470,7 +491,17 @@ class MyBooking extends Component {
                       this.acceptBookingFn(item.id, item.quotation_id);
                     }}
                   >
-                    <Text style={styles.btnTxt}>Accept</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 32,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Accept</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
@@ -478,7 +509,17 @@ class MyBooking extends Component {
                     }}
                     style={styles.cancelbtn}
                   >
-                    <Text style={styles.btnTxt}>Cancel</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 32,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Cancel</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
               ) : null}
@@ -581,21 +622,34 @@ class MyBooking extends Component {
                         </Text>
                       ) : null}
                       <View style={styles.ModalActionButtonContainer}>
-                        <TouchableOpacity
-                          style={styles.ModalOkButton}
-                          onPress={() => {
-                            this.UploadPayment();
+                        <LinearGradient
+                          colors={["#5be9aa", colorPrimary]}
+                          style={{
+                            height: 33,
+                            borderRadius: 5,
+                            justifyContent: "center",
+                            alignItems: "center",
                           }}
                         >
-                          <Text style={styles.modalbtn}>Upload</Text>
-                        </TouchableOpacity>
+                          <Text style={styles.btntext}>Upload</Text>
+                        </LinearGradient>
                         <TouchableOpacity
                           style={styles.ModalCancelButton}
                           onPress={() => {
                             this.closePaymentModal();
                           }}
                         >
-                          <Text style={styles.modalbtn}>Close</Text>
+                          <LinearGradient
+                            colors={["#5be9aa", colorPrimary]}
+                            style={{
+                              height: 33,
+                              borderRadius: 5,
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text style={styles.btntext}>Close</Text>
+                          </LinearGradient>
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -765,11 +819,12 @@ const styles = StyleSheet.create({
   },
   ActionIcon: {
     marginBottom: 15,
-    paddingBottom: 7,
-    paddingTop: 7,
-    paddingLeft: 11,
-    paddingRight: 11,
-    borderRadius: 2,
+    marginTop: -20,
+    paddingBottom: 8,
+    paddingTop: 8,
+    paddingLeft: 8,
+    paddingRight: 8,
+    borderRadius: 5,
     backgroundColor: colorPrimary,
     transform: [{ rotate: "90deg" }],
   },
@@ -803,28 +858,55 @@ const styles = StyleSheet.create({
     width: 17,
   },
   acceptbtn: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 7,
-    paddingBottom: 7,
-    backgroundColor: "#009D00",
-    marginRight: 7,
-    borderWidth: 1,
-    borderRadius: 3,
-    borderColor: "#009D00",
+    // paddingLeft: 10,
+    // paddingRight: 10,
+    // paddingTop: 7,
+    // paddingBottom: 7,
+    // backgroundColor: "#009D00",
+    // marginRight: 7,
+    // borderWidth: 1,
+    // borderRadius: 3,
+    // borderColor: "#009D00",
+    borderRadius: 5,
+    borderColor: colorPrimary,
+    position: "absolute",
+    shadowColor: "#777",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6.22,
+    width: 150,
+    height: 30,
+    textAlign: "center",
+    marginRight: "195%",
+    marginLeft: "-135%",
+    marginTop: "32%",
   },
   cancelbtn: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 7,
-    paddingBottom: 7,
-    backgroundColor: colorPrimary,
-    borderWidth: 1,
-    borderRadius: 3,
+    borderRadius: 5,
     borderColor: colorPrimary,
+    position: "absolute",
+    shadowColor: "#777",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6.22,
+    width: 150,
+    height: 30,
+    textAlign: "center",
+    marginRight: "125%",
+    marginLeft: "-50%",
+    marginTop: "32%",
+    // paddingLeft: 10,
+    // paddingRight: 10,
+    // paddingTop: 7,
+    // paddingBottom: 7,
+    // backgroundColor: colorPrimary,
+    // borderWidth: 1,
+    // borderRadius: 3,
+    // borderColor: colorPrimary,
   },
-  btnTxt: {
+  btntext: {
     color: "#ffffff",
+    fontSize: 13,
   },
   modal: {
     backgroundColor: "#ffffff",
@@ -862,10 +944,24 @@ const styles = StyleSheet.create({
     color: "#777777",
   },
   ModalActionButtonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
+    // flexDirection: "row",
+    // alignItems: "center",
+    // justifyContent: "center",
+    // marginTop: 20,
+    borderRadius: 5,
+    borderColor: colorPrimary,
+    position: "absolute",
+    shadowColor: "#777",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6.22,
+    width: 110,
+    height: 40,
+    textAlign: "center",
+    marginTop: "135%",
+    marginLeft: "17%",
+    marginRight: "-17%",
+    marginBottom: "14%",
   },
   ModalOkButton: {
     height: 35,
@@ -876,17 +972,31 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   ModalCancelButton: {
-    height: 35,
-    width: 70,
-    marginLeft: 15,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colorPrimary,
+    // height: 35,
+    // width: 70,
+
+    // alignItems: "center",
+    // justifyContent: "center",
+    // backgroundColor: colorPrimary,
+    // borderRadius: 5,
     borderRadius: 5,
+    borderColor: colorPrimary,
+    position: "absolute",
+    shadowColor: "#777",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6.22,
+    width: 110,
+    height: 40,
+    textAlign: "center",
+    marginLeft: "120%",
+    marginRight: "-140%",
+    marginBottom: "8%",
   },
   combine: {
     flexDirection: "row",
     paddingLeft: 20,
+    marginBottom: 10,
   },
   label: {
     width: "38%",
@@ -910,6 +1020,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "rgba(119,119,119,1)",
     marginBottom: 3,
+    marginRight: 90,
   },
   inputtxt: {
     marginTop: 0,

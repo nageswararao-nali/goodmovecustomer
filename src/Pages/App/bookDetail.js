@@ -326,21 +326,21 @@ export default class BookingDetail extends Component {
                       {delivered_tour_booking_details != null ? (
                         <View>
                           <Image
-                            source={require("../../images/booking-list-icon/4-Grey.png")}
+                            source={require("../../images/booking-list-icon/4-GreyFinal.png")}
                             style={styles.trackImg}
                           />
                         </View>
                       ) : intransit_tour_booking_details != null ? (
                         <View>
                           <Image
-                            source={require("../../images/booking-list-icon/3-Grey.png")}
+                            source={require("../../images/booking-list-icon/3-GreyFinal.png")}
                             style={styles.trackImg}
                           />
                         </View>
                       ) : pickup_tour_booking_details != null ? (
                         <View>
                           <Image
-                            source={require("../../images/booking-list-icon/2-Grey.png")}
+                            source={require("../../images/booking-list-icon/2-GreyFinal.png")}
                             style={styles.trackImg}
                           />
                         </View>
