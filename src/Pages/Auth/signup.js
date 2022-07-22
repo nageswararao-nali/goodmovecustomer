@@ -16,6 +16,7 @@ import validate from "validate.js";
 import { Header } from "react-navigation-stack";
 import AppLogoBlock from "../../Components/AppLogoBlock";
 import { colorPrimary } from "../../Components/colors";
+import { LinearGradient } from "expo-linear-gradient";
 export default class Signup extends Component {
   /** navigation header */
   static navigationOptions = ({ navigation }) => {
@@ -329,7 +330,17 @@ export default class Signup extends Component {
                     style={styles.button}
                     onPress={this.register.bind(this)}
                   >
-                    <Text style={styles.btntext}>Register</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 38,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Register</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
 
@@ -439,20 +450,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    borderWidth: 1,
-    backgroundColor: colorPrimary,
     borderRadius: 5,
     borderColor: colorPrimary,
+    position: "absolute",
     shadowColor: "#777",
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 6.22,
-    elevation: 5,
-    paddingTop: 8,
-    marginTop: 9,
-    width: 270,
+    width: 250,
     height: 40,
     textAlign: "center",
+    // marginTop: 15,
   },
   btntext: {
     textAlign: "center",
@@ -464,12 +472,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-    marginTop: 7,
+    marginTop: 40,
     fontSize: 13,
     color: "#000000",
   },
   signup: {
-    marginTop: 7,
+    marginTop: 40,
     fontSize: 13,
     color: colorPrimary,
     textAlign: "left",

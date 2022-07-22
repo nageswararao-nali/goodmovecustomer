@@ -16,6 +16,7 @@ import { setPasswordAction, verifyOTPAction } from "../../util/action";
 import { Header } from "react-navigation-stack";
 import AppLogoBlock from "../../Components/AppLogoBlock";
 import { colorPrimary } from "../../Components/colors";
+import { LinearGradient } from "expo-linear-gradient";
 export default class SetPassword extends Component {
   /* Remove header part, not needed here */
   static navigationOptions = ({ navigation }) => {
@@ -361,7 +362,17 @@ export default class SetPassword extends Component {
                     style={styles.button}
                     onPress={this.submit.bind(this)}
                   >
-                    <Text style={styles.btntext}>Update</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 38,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Update</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -499,20 +510,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    borderWidth: 1,
-    backgroundColor: colorPrimary,
     borderRadius: 5,
     borderColor: colorPrimary,
+    position: "absolute",
     shadowColor: "#777",
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 6.22,
-    elevation: 5,
-    paddingTop: 8,
-    marginTop: 9,
-    width: 270,
+    width: 250,
     height: 40,
     textAlign: "center",
+    marginTop: "-4%",
   },
   btntext: {
     textAlign: "center",

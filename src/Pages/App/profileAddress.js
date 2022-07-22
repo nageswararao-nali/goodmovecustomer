@@ -1076,6 +1076,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: colorPrimary,
     fontWeight: "400",
+    marginLeft: 10,
+    marginBottom: 15,
   },
   TwoInputTogether: {
     flexDirection: "row",
