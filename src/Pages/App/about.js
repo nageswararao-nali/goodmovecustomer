@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   HeaderText: {
     marginLeft: 25,
-    marginTop: 10,
+    marginTop: 20,
     color: colorPrimary,
     fontSize: 25,
     fontWeight: "bold",
