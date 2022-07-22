@@ -20,7 +20,13 @@ export default class MyBooking extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: (
-        <View style={{ flex: 1, flexDirection: "row" }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            marginBottom: 25,
+          }}
+        >
           <LogoImage />
           <View style={styles.HeaderTextArea}>
             <Text style={styles.HeaderText}>Payment Options</Text>

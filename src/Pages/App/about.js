@@ -17,7 +17,14 @@ export default class MyBooking extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: (
-        <View style={{ flex: 1, flexDirection: "row" }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            marginBottom: 22,
+            marginLeft: 22,
+          }}
+        >
           <LogoImage />
           <View style={styles.HeaderTextArea}>
             <Text style={styles.HeaderText}>About Us</Text>
@@ -92,7 +99,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   HeaderText: {
-    marginLeft: 30,
+    marginLeft: 25,
+    marginTop: 10,
     color: colorPrimary,
     fontSize: 25,
     fontWeight: "bold",

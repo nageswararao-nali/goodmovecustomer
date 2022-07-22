@@ -40,7 +40,7 @@ class Address extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: (
-        <View style={{ flex: 1, flexDirection: "row" }}>
+        <View style={{ flex: 1, flexDirection: "row", marginLeft: 5 }}>
           <LogoImage />
           <View style={styles.HeaderTextArea}>
             <Text style={styles.HeaderText}>Select Address</Text>
@@ -935,7 +935,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   HeaderText: {
-    marginLeft: 30,
+    marginLeft: 25,
+    marginTop: 15,
     color: colorPrimary,
     fontSize: 25,
     fontWeight: "bold",

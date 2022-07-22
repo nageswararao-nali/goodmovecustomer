@@ -60,8 +60,8 @@ class AddBooking extends Component {
     return {
       headerMode: "screen",
       headerTitle: (
-        <View style={{ flex: 1, flexDirection: "row", marginTop: 20 }}>
-          <LogoImage />
+        <View style={{ flex: 1, flexDirection: "row", marginLeft: 15 }}>
+          <LogoImage style={styles.LogoWrapper} />
           <View style={styles.HeaderTextArea}>
             <Text style={styles.HeaderText}>Book Vehicle</Text>
           </View>
@@ -1764,11 +1764,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   HeaderText: {
-    marginLeft: 30,
+    marginLeft: 25,
     marginTop: 15,
     color: colorPrimary,
     fontSize: 25,
     fontWeight: "bold",
+  },
+  LogoWrapper: {
+    marginTop: 15,
+    marginLeft: 15,
   },
   container: {
     flex: 1,

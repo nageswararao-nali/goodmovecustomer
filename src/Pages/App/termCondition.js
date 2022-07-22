@@ -15,7 +15,7 @@ export default class MyBooking extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: (
-        <View style={{ flex: 1, flexDirection: "row" }}>
+        <View style={{ flex: 1, flexDirection: "row", marginBottom: 20 }}>
           <LogoImage />
           <View style={styles.HeaderTextArea}>
             <Text style={styles.HeaderText}>Terms & Conditions</Text>
@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
   },
   HeaderText: {
     marginLeft: 10,
+    marginTop: 20,
     color: colorPrimary,
     fontSize: 25,
     fontWeight: "bold",
