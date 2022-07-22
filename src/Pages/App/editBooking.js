@@ -1707,7 +1707,17 @@ class EditBooking extends Component {
                     style={styles.button}
                     onPress={() => this.submit()}
                   >
-                    <Text style={styles.btntext}>Book Vehicle</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 38,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Book Vehicle</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -1853,17 +1863,13 @@ const styles = StyleSheet.create({
     marginBottom: "15%",
   },
   button: {
-    borderWidth: 1,
-    backgroundColor: colorPrimary,
     borderRadius: 5,
     borderColor: colorPrimary,
+    position: "absolute",
     shadowColor: "#777",
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 6.22,
-    elevation: 5,
-    paddingTop: 8,
-    marginTop: "15%",
     width: 200,
     height: 40,
     textAlign: "center",

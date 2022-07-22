@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import NavigationDrawerStructure from "./navigationdrawerstructure";
 import LogoImage from "../../Components/applogo";
+import { LinearGradient } from "expo-linear-gradient";
+
 import {
   RefreshControl,
   StyleSheet,
@@ -758,15 +760,35 @@ class AddingAddress extends Component {
                     style={styles.SubmitButton}
                     onPress={() => this.clear()}
                   >
-                    <Text style={styles.btntext}>Clear</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 38,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Clear</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={styles.SubmitButton}
+                    style={styles.SubmitButton1}
                     onPress={() => this.submit()}
                   >
-                    <Text style={styles.btntext}>
-                      {this.state.id ? "Update" : "Add"} Address
-                    </Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 38,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>
+                        {this.state.id ? "Update" : "Add"} Address
+                      </Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
               </Col>
@@ -993,7 +1015,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 18,
+    fontSize: 17,
     color: "#ffffff",
   },
   HeaderTextArea: {
@@ -1025,7 +1047,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 17,
     marginTop: 0,
     backgroundColor: "yellow",
   },
@@ -1073,26 +1095,41 @@ const styles = StyleSheet.create({
     borderColor: "rgba(119,119,119,0.6)",
   },
   SubmitButtonContainer: {
-    marginTop: 15,
+    marginTop: "20%",
     alignItems: "center",
-    //marginBottom: '30%',
   },
+
   SubmitButton: {
-    borderWidth: 1,
-    backgroundColor: colorPrimary,
     borderRadius: 5,
     borderColor: colorPrimary,
-    paddingTop: 8,
-    marginTop: 9,
-    width: 160,
+    position: "absolute",
+    shadowColor: "#777",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6.22,
+    width: 150,
     height: 40,
     textAlign: "center",
-    margin: 10,
+    marginLeft: "3%",
+  },
+
+  SubmitButton1: {
+    borderRadius: 5,
+    borderColor: colorPrimary,
+    position: "absolute",
+    shadowColor: "#777",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6.22,
+    width: 200,
+    height: 40,
+    textAlign: "center",
+    marginLeft: "45%",
   },
   btntext: {
     textAlign: "center",
     color: "#ffffff",
-    fontSize: 18,
+    fontSize: 17,
   },
   error: {
     left: 15,
@@ -1142,7 +1179,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: "center",
     color: "#ffffff",
-    fontSize: 18,
+    fontSize: 17,
     // fontWeight: '400',
   },
   slidContent: {

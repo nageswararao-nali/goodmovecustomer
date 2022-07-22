@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NavigationDrawerStructure from "./navigationdrawerstructure";
 import LogoImage from "../../Components/applogo";
+import { LinearGradient } from "expo-linear-gradient";
 import {
   RefreshControl,
   StyleSheet,
@@ -730,7 +731,17 @@ class Address extends Component {
                     style={styles.SubmitButton}
                     onPress={() => this.submit()}
                   >
-                    <Text style={styles.btntext}>Add Address</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 38,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Add Address</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
               </Col>
@@ -1011,20 +1022,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   SubmitButton: {
-    borderWidth: 1,
-    backgroundColor: colorPrimary,
     borderRadius: 5,
     borderColor: colorPrimary,
-    paddingTop: 8,
-    marginTop: 9,
-    width: 180,
+    position: "absolute",
+    shadowColor: "#777",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6.22,
+    width: 160,
     height: 40,
     textAlign: "center",
+    marginLeft: "3%",
   },
   btntext: {
     textAlign: "center",
     color: "#ffffff",
-    fontSize: 18,
+    fontSize: 17,
   },
   error: {
     left: 15,

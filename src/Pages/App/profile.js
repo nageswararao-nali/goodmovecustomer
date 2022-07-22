@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import NavigationDrawerStructure from "./navigationdrawerstructure";
 import LogoImage from "../../Components/applogo";
 import { colorPrimary } from "../../Components/colors";
+import { LinearGradient } from "expo-linear-gradient";
 import {
   StyleSheet,
   ActivityIndicator,
@@ -348,7 +349,17 @@ export default class Profile extends Component {
                     style={styles.button}
                     onPress={() => this.save()}
                   >
-                    <Text style={styles.btntext}>Save Changes</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 38,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Save Changes</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.button1}
@@ -356,7 +367,17 @@ export default class Profile extends Component {
                       navigate("AddressPage");
                     }}
                   >
-                    <Text style={styles.btntext}>Add & View Address</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 38,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Add & View Address</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -429,41 +450,33 @@ const styles = StyleSheet.create({
   btncontrol: {
     flexDirection: "row",
     marginBottom: "30%",
+    marginTop: "20%",
   },
   button: {
-    borderWidth: 1,
-    backgroundColor: colorPrimary,
     borderRadius: 5,
     borderColor: colorPrimary,
+    position: "absolute",
     shadowColor: "#777",
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 6.22,
-    elevation: 5,
-    paddingTop: 8,
     width: 150,
-    marginTop: "25%",
-    marginLeft: "2%",
-    //marginRight: 17,
     height: 40,
     textAlign: "center",
+    marginLeft: "2%",
   },
   button1: {
-    borderWidth: 1,
-    backgroundColor: colorPrimary,
     borderRadius: 5,
     borderColor: colorPrimary,
+    position: "absolute",
     shadowColor: "#777",
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 6.22,
-    elevation: 5,
-    paddingTop: 8,
     width: 180,
-    marginTop: "25%",
-    marginLeft: "7%",
     height: 40,
     textAlign: "center",
+    marginLeft: "48%",
   },
   btntext: {
     textAlign: "center",

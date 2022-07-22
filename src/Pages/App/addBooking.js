@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import NavigationDrawerStructure from "./navigationdrawerstructure";
 import LogoImage from "../../Components/applogo";
-
+import { LinearGradient } from "expo-linear-gradient";
 import {
   StyleSheet,
   View,
@@ -1736,7 +1736,17 @@ class AddBooking extends Component {
                     style={styles.button}
                     onPress={() => this.submit()}
                   >
-                    <Text style={styles.btntext}>Book Vehicle</Text>
+                    <LinearGradient
+                      colors={["#5be9aa", colorPrimary]}
+                      style={{
+                        height: 38,
+                        borderRadius: 5,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.btntext}>Book Vehicle</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -1791,7 +1801,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginBottom: 3,
     fontWeight: "400",
-    color: "rgba(119,119,119,1)",
+    color: "#464646",
     marginTop: 3,
   },
   combine: {
@@ -1887,17 +1897,13 @@ const styles = StyleSheet.create({
     marginBottom: "15%",
   },
   button: {
-    borderWidth: 1,
-    backgroundColor: colorPrimary,
     borderRadius: 5,
     borderColor: colorPrimary,
+    position: "absolute",
     shadowColor: "#777",
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 6.22,
-    elevation: 5,
-    paddingTop: 8,
-    marginTop: "15%",
     width: 200,
     height: 40,
     textAlign: "center",
@@ -1905,7 +1911,7 @@ const styles = StyleSheet.create({
   btntext: {
     textAlign: "center",
     color: "#ffffff",
-    fontSize: 18,
+    fontSize: 17,
   },
   error: {
     left: 10,

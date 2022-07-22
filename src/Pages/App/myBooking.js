@@ -384,7 +384,9 @@ class MyBooking extends Component {
       >
         <View style={styles.ItemContainer}>
           <View>
-            <Text style={styles.ItemHeader}>Booking Id # {item.id}</Text>
+            <Text style={styles.ItemHeader}>
+              Booking Id <Text style={styles.BookingIdWrapper}>#{item.id}</Text>
+            </Text>
           </View>
           <View style={styles.InnerContainer}>
             <View style={styles.innerleft}>
@@ -699,7 +701,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 18,
+    fontSize: 17,
   },
   HeaderTextArea: {
     justifyContent: "center",
@@ -716,6 +718,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "flex-start",
+  },
+  BookingIdWrapper: {
+    color: colorPrimary,
   },
   card: {
     marginTop: 12,

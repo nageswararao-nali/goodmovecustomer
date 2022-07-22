@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   btntext: {
     textAlign: "center",
     color: "#ffffff",
-    fontSize: 18,
+    fontSize: 17,
   },
   container: {
     flex: 1,
